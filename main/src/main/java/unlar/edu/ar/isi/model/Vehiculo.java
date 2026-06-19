@@ -2,12 +2,12 @@ package unlar.edu.ar.isi.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import unlar.edu.ar.isi.estado.EstadoEnEspera;
 import unlar.edu.ar.isi.estado.EstadoVehiculo;
+import unlar.edu.ar.isi.estado.EstadoEnEspera;
 
 @Data
 @AllArgsConstructor
-public abstract class Vehiculo {
+public abstract class Vehiculo implements Comparable<Vehiculo> {
     private String patente;
     private double porcentajeBateria;
     private double tarifaBase;
@@ -30,5 +30,10 @@ public abstract class Vehiculo {
 
     public EstadoVehiculo getEstado() {
         return this.estado;
+    }
+
+    @Override
+    public int compareTo(Vehiculo otro) {
+        return Double.compare(this.porcentajeBateria, otro.getPorcentajeBateria());
     }
 }

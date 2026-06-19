@@ -4,26 +4,30 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class EstacionAnclaje {
     private String nombre;
-    private List<Vehiculo> vehiculosDisponibles = new ArrayList<>();
+    private Map<String, Vehiculo> vehiculosDisponibles = new HashMap<>();
 
     public void agregarVehiculo(Vehiculo vehiculo) {
-        vehiculosDisponibles.add(vehiculo);
+        vehiculosDisponibles.put(vehiculo.getPatente(), vehiculo);
     }
 
     public Vehiculo buscarVehiculo(String patente) {
-        return vehiculosDisponibles.stream()
-                .filter(v -> v.getPatente().equalsIgnoreCase(patente))
-                .findFirst()
-                .orElseThrow(() -> {
-                    System.out.println("Vehículo No Encontrado");
-                    return new RuntimeException("Vehículo No Encontrado");
-                });
+        Vehiculo vehiculo = vehiculosDisponibles.get(patente);
+        if (vehiculo == null) {
+            throw new RuntimeException("Error");
+        }
+        return vehiculo;
+    }
+
+    public List<Vehiculo> obtenerTodos() {
+        return new ArrayList<>(vehiculosDisponibles.values());
     }
 }
